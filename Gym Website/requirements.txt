@@ -1,0 +1,10 @@
+flask
+Jinja2
+Werkzeug
+itsdangerous
+click
+
+
+# gunicorn          # deployment for render/heroku/railway
+# python-dotenv     # secret keys env file me store करने के लिए
+# flask-cors        # external API के लिए

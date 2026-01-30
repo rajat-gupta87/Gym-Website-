@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📅 Full Fitness Calendar</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --pri: #6A5ACD;
+            --pri-dark: #4D3FB7;
+            --bg: #0d0818;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: "Poppins", sans-serif;
+            padding-top: 40px;
+            text-align: center;
+        }
+
+        /* CARD */
+        .calendar-container {
+            width: 90%;
+            max-width: 800px;
+            background: rgb(65, 36, 88);
+            margin: auto;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 0 20px rgba(106, 90, 205, 0.25);
+        }
+
+        /* Month Heading */
+        #monthLabel {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--pri);
+        }
+
+        /* Month Year Buttons */
+        .nav-btn {
+            background: var(--pri);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .nav-btn:hover {
+            background: var(--pri-dark);
+        }
+
+        /* Calendar Grid */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-top: 15px;
+        }
+
+        .day,
+        .weekday {
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .weekday {
+            background: #EFEAFF;
+            color: #4D3FB7;
+        }
+
+        .day {
+            background: #f7f4ff;
+            cursor: pointer;
+        }
+
+        .day:hover {
+            background: var(--pri);
+            color: white;
+        }
+
+        .today {
+            background: #ffb200 !important;
+            color: black !important;
+            font-weight: 700;
+        }
+
+        /* YEAR SELECT */
+        .year-box {
+            background: white;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 10px;
+            max-width: 200px;
+            margin-inline: auto;
+            box-shadow: 0 0 12px rgba(106, 90, 205, .3);
+        }
+
+        select {
+            border-radius: 8px;
+            padding: 8px;
+            border: 1px solid var(--pri);
+        }
+
+        /* BACK + HOME */
+        .bottom-btn {
+            position: fixed;
+            bottom: 20px;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            background: var(--pri);
+            color: white;
+            border: none;
+            font-size: 15px;
+        }
+
+        #backBtn {
+            left: 20px;
+        }
+
+        #homeBtn {
+            right: 20px;
+        }
+
+        .bottom-btn:hover {
+            background: var(--pri-dark);
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h2 style="color:var(--pri)" class="fw-bold mb-3">📅 Monthly & Yearly Fitness Calendar</h2>
+
+    <div class="calendar-container">
+
+        <!-- Month Navigation -->
+        <div class="d-flex justify-content-between">
+            <button class="nav-btn" onclick="changeMonth(-1)">⬅ Prev</button>
+            <span id="monthLabel"></span>
+            <button class="nav-btn" onclick="changeMonth(1)">Next ➡</button>
+        </div>
+
+        <!-- Year Selection -->
+        <div class="year-box mt-3">
+            <select id="yearSelect" onchange="generateCalendar()"></select>
+        </div>
+
+        <!-- Week Header -->
+        <div class="calendar" id="calendar">
+            <!-- JS will generate -->
+        </div>
+    </div>
+
+    <!-- BACK + HOME -->
+    <button onclick="history.back()" id="backBtn" class="bottom-btn">⬅ Back</button>
+    <a href="/" id="homeBtn" class="bottom-btn">🏠 Home</a>
+
+    <script>
+        let date = new Date();
+        const cal = document.getElementById("calendar");
+        const monthLabel = document.getElementById("monthLabel");
+        const yearSelect = document.getElementById("yearSelect");
+
+        for (let y = 2020; y <= 2050; y++) {
+            let op = document.createElement("option")
+            op.textContent = op.value = y;
+            if (y === date.getFullYear()) op.selected = true;
+            yearSelect.appendChild(op);
+        }
+
+        function generateCalendar() {
+            cal.innerHTML = "";
+
+            let year = parseInt(yearSelect.value);
+            let month = date.getMonth();
+            let first = new Date(year, month, 1).getDay();
+            let days = new Date(year, month + 1, 0).getDate();
+
+            monthLabel.textContent = date.toLocaleString("en", { month: "long" }) + " " + year;
+
+            let weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            weekdays.forEach(d => cal.innerHTML += `<div class='weekday'>${d}</div>`);
+
+            for (let i = 0; i < first; i++) cal.innerHTML += `<div></div>`;
+
+            for (let d = 1; d <= days; d++) {
+                let cls = "day";
+                if (d === new Date().getDate() && year === new Date().getFullYear() && month === new Date().getMonth()) cls = "day today";
+                cal.innerHTML += `<div class="${cls}">${d}</div>`;
+            }
+        }
+
+        function changeMonth(val) {
+            date.setMonth(date.getMonth() + val);
+            generateCalendar();
+        }
+
+        generateCalendar();
+    </script>
+
+</body>
+
+</html>
