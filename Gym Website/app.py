@@ -734,7 +734,7 @@ def progress():
     conn = connect()
     cur = conn.cursor()
 
-    uid = session["user_id"]  # current logged-in user
+    uid = session["user_id"]  
 
     # ---- SAVE ENTRY ----
     if request.method == "POST":
@@ -749,7 +749,7 @@ def progress():
                 )
                 conn.commit()
             except ValueError:
-                pass  # galat value ignore
+                pass  
 
     # ---- LOAD DATA FOR GRAPH (user-wise) ----
     cur.execute(
